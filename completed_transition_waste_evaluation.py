@@ -186,6 +186,7 @@ def max_max_abandoned_completed_tasks(N, L, F, fraction, category):
 def write_to_csv_fixedN(N, L_values, F, fractions):
     """
     This write required results to csv files, N is fixed, L varies
+    @N: N is fixed
     @L_values: the values of L to be plot
     @fractions: list of fractions used, i.e., [0.1, 0.5, 0.9]
     :return:
@@ -224,6 +225,7 @@ def write_to_csv_fixedL(N_values, L, fractions):
     """
     This write required results to csv files
     @N_values: the values of N to be plot
+    @L: L is fixed
     @fractions: list of fractions used, i.e., [0.1, 0.5, 0.9]
     :return:
     """
@@ -261,51 +263,35 @@ def write_to_csv_fixedL(N_values, L, fractions):
 
 
 def main():
+    
+    # Simulation for computation overhead Case 1: N = 10, L = 3,4,5,6,7,8,9
     N = 10
     L_values = range(3,N)
     F = 10*N*(N-1)
-    # fractions = [0.25, 0.5, 0.75]
     fractions = [0.1,0.5,0.9]
     write_to_csv_fixedN(N, L_values, F, fractions)
 
+    # Simulation for computation overhead Case 2: L = 5, N = 6,7,8,...,15
     L = 5
     N_values = range(L+1,16)
     write_to_csv_fixedL(N_values, L, fractions)
 
+    # Simulation for computation overhead Case 3: N = 7, L = 3, F = 210
     N = 7
     L = 3
-    #F = N*(N-1)
     F = 210
-    #
     print(f"N = {N}, L = {L}, F = {F}\n")
     #
-    for fraction in [0.1, 0.5, 0.9]:
+    for fraction in fractions:
         print("fraction = ", fraction)
-        # cyclic_average_average_abandoned = average_average_abandoned_completed_tasks(N, L, F, fraction, "cyclic")
-        # shifted_average_average_abandoned = average_average_abandoned_completed_tasks(N, L, F, fraction, "shifted")
-        # print(f"     cyclic_average_average: {cyclic_average_average_abandoned: .1f}")
-        # print(f"    shifted_average_average: {shifted_average_average_abandoned: .1f}")
-
         cyclic_average_max_abandoned = average_max_abandoned_completed_tasks(N, L, F, fraction, "cyclic")
         shifted_average_max_abandoned = average_max_abandoned_completed_tasks(N, L, F, fraction, "shifted")
         zw_average_max_abandoned = average_average_abandoned_completed_tasks(N, L, F, fraction, "zw")
         print(f"     cyclic_average_max: {cyclic_average_max_abandoned: .1f}")
         print(f"    shifted_average_max: {shifted_average_max_abandoned: .1f}")
         print(f"    zw_average_max: {zw_average_max_abandoned: .1f}")
-
-        # cyclic_max_max_abandoned = max_max_abandoned_completed_tasks(N, L, F, fraction, "cyclic")
-        # shifted_max_max_abandoned = max_max_abandoned_completed_tasks(N, L, F, fraction, "shifted")
-        # print(f"     cyclic_max_max: {cyclic_max_max_abandoned: .1f}")
-        # print(f"    shifted_max_max: {shifted_max_max_abandoned: .1f}")
-
         print("----------------------------------------------")
 
-    #cyclicT_before = cyclic.cyclicTAS(N, L, F, -1)
-    #print("Cyclic before = ", cyclicT_before)
-    #n_left = 4
-    #cyclicT_after = cyclic.cyclicTAS(N, L, F, n_left)
-    #print(f"Cyclic after n* = {n_left} left = ", cyclicT_after)
-    #
     for n_left in range(N):
         print(f"n_left = {n_left}: ")
         cyclicT_before = cyclic.cyclicTAS(N, L, F, -1)
@@ -315,22 +301,7 @@ def main():
         print("    Cyclic after = ", cyclicT_after)
         print("    Shifted after = ", shiftedT_after)
         print("--------------------------------\n")
-    #
-    #
-    # for fraction in [0.25, 0.5, 0.75]:
-    #     print(f"fraction = {fraction}")
-    #     cyclicT_completed = cyclic_completed_TAS(N, L, F, fraction)
-    #     print(f"cyclic_completed = {cyclicT_completed}")
-    #     for n_left in range(N):
-    #         print(f"   n_left = {n_left}")
-    #         cyclic_AC_per_nleft = abandoned_completed_tasks(N, L, F, n_left, fraction, "cyclic")
-    #         shifted_AC_per_nleft = abandoned_completed_tasks(N, L, F, n_left, fraction, "shifted")
-    #         print(f"       cyclicAC = {cyclic_AC_per_nleft}")
-    #         print(f"       shiftedAC = {shifted_AC_per_nleft}")
-    #     print("------------------------------------")
 
-    #print(cyclic_completed_TAS(N, L, F, 4, 0.25))
-    #print(abandoned_completed_new_tasks(N, L, F, 4, 0.25, "cyclic"))
 
 if __name__ == "__main__":
     main()
